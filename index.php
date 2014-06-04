@@ -3,6 +3,16 @@
 <head>
 </head>
 <body>
+
+<div>
+    <form action="download.php" target="download" method="post">
+    網址：<input name="url" type="text" value="" id="downloadUrl" style="width:300px;" /><button>下載</button>
+    </form>
+    <iframe name="download" style="width:0;height:0px; display:none;"></iframe>
+</div>
+
+<div style="margin:20px;">
+
 <?php
 
 
@@ -16,7 +26,7 @@ shuffle($files);
 
 echo '<div id="audio"><audio controls  volume=0.4 id="player" >';
 foreach ($files as $file) {
-    echo '<source src="' .$file. '" type="audio/ogg">';
+ //   echo '<source src="' .$file. '" type="audio/ogg">';
 }
 echo '</audio></div>';
 
@@ -24,6 +34,12 @@ echo '<br />';
 
 foreach ($files as $file) {
     echo '<a href="'. urlencode($file).'"  onclick="playThis(\'' .$file.'\');return false;">' . $file .'</a> <br />';
+}
+
+foreach ($files as &$file) {
+    $file = preg_replace('/^\.\/\//', '', $file);
+    $file = preg_replace("/\'/", "\\'", $file);
+
 }
 
 
@@ -47,25 +63,23 @@ function getFiles($dir, &$files) {
 
 
 
-
+</div>
 
 
 
 </body>
 <script>
-var musicList = [<?php echo explode(",", $files)?>];
+var musicList = ['<?php echo implode("','", $files)?>'];
 var index = 0;
 function init() {
     var player = document.getElementById('player');
     player.volume = 0.2;
-    player.onended = playNext;
+    player.addEventListener('ended', playNext);
 }
 
-function end() {
-    
-}
 
 function playNext() {
+console.log("next");
     var file;
     index++;
     if (index >= musicList.length) index = 0;
@@ -84,6 +98,6 @@ function playThis(file) {
 
 
 
-init();
+playNext();
 </script>
 </html>
