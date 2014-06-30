@@ -6,7 +6,9 @@
 
 <div>
     <form action="download.php" target="download" method="post">
-    網址：<input name="url" type="text" value="" id="downloadUrl" style="width:300px;" /><button>下載</button>
+    網址：<input name="url" type="text" value="" id="downloadUrl" style="width:300px;" /><br />
+    檔名：<input name="name" type="text" value=""  style="width:300px;" />
+    <br /><button>下載</button>
     </form>
     <iframe name="download" style="width:0;height:0px; display:none;"></iframe>
 </div>
