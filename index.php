@@ -74,7 +74,8 @@ function getFiles($dir, &$files) {
 <script>
 var musicList = ['<?php echo implode("','", $files)?>'];
 var index = Math.round(Math.random() * (musicList.length - 1 ));
-function init() {
+
+function reinit() {
     var player = document.getElementById('player');
     player.volume = 0.2;
     player.addEventListener('ended', playNext);
@@ -82,10 +83,11 @@ function init() {
 
 
 function playNext() {
-    console.log("next");
+    //console.log("next");
     var file;
     index++;
     if (index >= musicList.length) index = 0;
+    else if (index < 0) index = 0;
     file = musicList[index];
     playThis(file);
 }
@@ -97,11 +99,29 @@ function playThis(file) {
     html += '</audio>';
     document.getElementById('audio').innerHTML = html;
     location.hash = file;
-    init();
+    reinit();
 }
 
+function findMusicByName(name) {
+    var index = 0, n;
+    n = musicList.length;
+    for (index; index < n; index++) {
+        //console.log("-" + musicList[index] + "-");
+        if (musicList[index] == name) {
+            return index;
+        }
+    }
+    return 1;
+}
 
+var hash = location.hash;
+if (hash) {
+    hash = hash.replace(/^[#\/\/\.]+/, '');
+    index = findMusicByName(hash) - 1;
+    playNext();
 
-playNext();
+} else {
+    playNext();
+}
 </script>
 </html>
