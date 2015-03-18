@@ -73,7 +73,7 @@ function getFiles($dir, &$files) {
 </body>
 <script>
 var musicList = ['<?php echo implode("','", $files)?>'];
-var index = 0;
+var index = Math.round(Math.random() * (musicList.length - 1 ));
 function init() {
     var player = document.getElementById('player');
     player.volume = 0.2;
@@ -82,7 +82,7 @@ function init() {
 
 
 function playNext() {
-console.log("next");
+    console.log("next");
     var file;
     index++;
     if (index >= musicList.length) index = 0;
@@ -96,6 +96,7 @@ function playThis(file) {
     html +=  '<source src="' + file + '" type="audio/ogg">';
     html += '</audio>';
     document.getElementById('audio').innerHTML = html;
+    location.hash = file;
     init();
 }
 
