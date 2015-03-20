@@ -14,6 +14,10 @@
     <iframe name="download" style="width:0;height:0px; display:none;"></iframe>
 </div>
 
+<br />
+<div id="playing-wrap">
+    <span>Playing: </span> <span id="playing-song-name"></span>
+</div>
 <div style="margin:20px;">
 
 <?php
@@ -36,7 +40,7 @@ echo '</audio></div>';
 echo '<br />';
 
 foreach ($files as $file) {
-    echo '<a href="'. urlencode($file).'"  onclick="playThis(\'' .$file.'\');return false;">' . $file .'</a> <br />';
+    echo '<a style="display: block; height: 15px; margin: 1px 0;" href="'. urlencode($file).'"  onclick="playThis(\'' .$file.'\');return false;">' . preg_replace('/^\.\/\//', '', $file) .'</a> <br />';
 }
 
 foreach ($files as &$file) {
@@ -99,6 +103,10 @@ function playThis(file) {
     html += '</audio>';
     document.getElementById('audio').innerHTML = html;
     location.hash = file;
+    var songName = file.split(/\//);
+    songName = songName[songName.length - 1];
+    songName = songName.replace(/\.[^\.]+$/, '');
+    document.getElementById('playing-song-name').innerHTML = songName;
     reinit();
 }
 
