@@ -1,4 +1,15 @@
-<!DOCTYPE html>
+<?php
+//Get all directory.
+$dirs = array(".");
+$d = opendir('./');
+while ($f = readdir($d)) {
+    if ($f == '.' || $f == '..' ) continue;
+    if (is_dir($f)) {
+        $dirs[] = $f;
+    }
+}
+
+?><!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
 <head>
     <meta charset='utf-8'>
@@ -7,8 +18,16 @@
 
 <div>
     <form action="download.php" target="download" method="post">
-    網址：<input name="url" type="text" value="" id="downloadUrl" style="width:300px;" /><br />
-    檔名：<input name="name" type="text" value=""  style="width:300px;" />
+    下載網址：<input name="url" type="text" value="" id="downloadUrl" style="width:300px;" placeholder="http://xxx.xx.xx/x.mp3"/><br />
+    儲存目錄：
+        <select name="dir">
+<?php
+        foreach ($dirs as $dir) {
+            echo "<option value=\"$dir\">$dir</option>";
+        }
+?> 
+        </select> <span style="color: #ccc; font-size: 13px;">注意資料夾權限</span><br />
+    儲存檔名：<input name="name" type="text" value=""  style="width:300px;" placeholder="perfect_honey"/>
     <br /><button>下載</button>
     </form>
     <iframe name="download" style="width:0;height:0px; display:none;"></iframe>
