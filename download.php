@@ -7,7 +7,7 @@ if (empty ($dir)) $dir = "./";
 require_once "webClient.php";
 $name = strip_tags($name);
 $name = preg_replace('/[\/\\\\.]/i', '', $name);
-$dir  = preg_replace('/[\/\\\\.]/i', '', $dir);
+$dir  = preg_replace('/[\.]{2,}/i', '', $dir);
 
 
 $c = new MyCurl();
