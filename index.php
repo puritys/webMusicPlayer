@@ -45,16 +45,13 @@ while ($f = readdir($d)) {
 $files = array();
 getFiles('./', $files);
 
-
-
-
 shuffle($files);
-
-echo '<div id="audio"><audio controls  volume=0.4 id="player" >';
-foreach ($files as $file) {
- //   echo '<source src="' .$file. '" type="audio/ogg">';
-}
-echo '</audio></div>';
+echo <<<HTML
+    <div id="audio">
+        <audio controls  volume=0.4 id="player">
+        </audio>
+    </div>
+HTML;
 
 echo '<br />';
 
@@ -118,7 +115,7 @@ function playNext() {
 function playThis(file) {
     var html = "";
     html += '<audio controls  volume=0.4 id="player" autoplay=true>';
-    html +=  '<source src="' + file + '" type="audio/ogg">';
+    html +=  '<source src="' + file + '">';
     html += '</audio>';
     document.getElementById('audio').innerHTML = html;
     location.hash = file;
@@ -141,12 +138,12 @@ function findMusicByName(name) {
     return 1;
 }
 
+
 var hash = location.hash;
 if (hash) {
     hash = hash.replace(/^[#\/\/\.]+/, '');
     index = findMusicByName(hash) - 1;
     playNext();
-
 } else {
     playNext();
 }
