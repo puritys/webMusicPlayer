@@ -45,9 +45,13 @@ while ($f = readdir($d)) {
 Choose directory : <select onchange="chooseDirectory(event); return false;">
 <?php
         foreach ($dirs as $dir) {
-            if ($dir == '.' || $dir == '..') continue;
+            $name = $dir;
+            if ($dir == '.' || $dir == '..') {
+                $dir = "";
+                $name = "/";
+            }
             $selected = ($dir == $chooseDir) ? "selected = 'true'" : "";
-            echo "<option value=\"$dir\" $selected>$dir</option>";
+            echo "<option value=\"$dir\" $selected>$name</option>";
         }
 ?> 
 </select>
