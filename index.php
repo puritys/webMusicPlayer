@@ -1,4 +1,10 @@
 <?php
+$chooseDir = !empty($_GET['dir']) ? $_GET['dir'] : "";
+if (preg_match('/[\.\/\\]/', $chooseDir)) {
+    echo "Illegal parameter.";
+    exit(1);
+}
+
 //Get all directory.
 $dirs = array(".");
 $d = opendir('./');
@@ -23,6 +29,7 @@ while ($f = readdir($d)) {
         <select name="dir">
 <?php
         foreach ($dirs as $dir) {
+            if ($dir == '.' || $dir == '..') continue;
             echo "<option value=\"$dir\">$dir</option>";
         }
 ?> 
@@ -34,6 +41,17 @@ while ($f = readdir($d)) {
 </div>
 
 <br />
+<div style="margin 5px 0;">
+Choose directory : <select onchange="chooseDirectory(event); return false;">
+<?php
+        foreach ($dirs as $dir) {
+            if ($dir == '.' || $dir == '..') continue;
+            $selected = ($dir == $chooseDir) ? "selected = 'true'" : "";
+            echo "<option value=\"$dir\" $selected>$dir</option>";
+        }
+?> 
+</select>
+</div>
 <div id="playing-wrap">
     <span>Playing: </span> <span id="playing-song-name"></span>
 </div>
@@ -43,7 +61,7 @@ while ($f = readdir($d)) {
 
 
 $files = array();
-getFiles('./', $files);
+getFiles('./'. $chooseDir, $files);
 
 shuffle($files);
 echo <<<HTML
@@ -138,6 +156,12 @@ function findMusicByName(name) {
     return 1;
 }
 
+function chooseDirectory(E) {
+    var target;
+    target = E.currentTarget;
+    window.location = "?dir=" + target.value;
+    return true;
+}
 
 var hash = location.hash;
 if (hash) {
