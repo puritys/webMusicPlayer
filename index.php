@@ -68,9 +68,15 @@ $files = array();
 getFiles('./'. $chooseDir, $files);
 
 shuffle($files);
+
+foreach ($files as $file) {
+    $source= '<source src="' . $file .'" />';
+    break;
+}
 echo <<<HTML
     <div id="audio">
-        <audio controls  volume=0.4 id="player">
+        <audio controls  volume=0.4 id="player" autoplay=true>
+            $source
         </audio>
     </div>
 HTML;
@@ -117,7 +123,7 @@ function getFiles($dir, &$files) {
 var musicList = ['<?php echo implode("','", $files)?>'];
 var index = Math.round(Math.random() * (musicList.length - 1 ));
 
-function reinit() {
+function init() {
     var player = document.getElementById('player');
     player.volume = 0.2;
     player.addEventListener('ended', playNext);
@@ -125,7 +131,6 @@ function reinit() {
 
 
 function playNext() {
-    //console.log("next");
     var file;
     index++;
     if (index >= musicList.length) index = 0;
@@ -135,24 +140,28 @@ function playNext() {
 }
 
 function playThis(file) {
-    var html = "";
-    html += '<audio controls  volume=0.4 id="player" autoplay=true>';
-    html +=  '<source src="' + file + '">';
-    html += '</audio>';
-    document.getElementById('audio').innerHTML = html;
+    //console.log("play file: " + file);
+    var player = document.getElementById('player');
+    var playerSource;
+    if (player) {
+        playerSource = player.querySelector("source");
+    }
+    playerSource.src = file;
     location.hash = file;
     var songName = file.split(/\//);
     songName = songName[songName.length - 1];
     songName = songName.replace(/\.[^\.]+$/, '');
     document.getElementById('playing-song-name').innerHTML = songName;
-    reinit();
+    if (player) {
+        player.load();
+        player.play();
+    }
 }
 
 function findMusicByName(name) {
     var index = 0, n;
     n = musicList.length;
     for (index; index < n; index++) {
-        //console.log("-" + musicList[index] + "-");
         if (musicList[index] == name) {
             return index;
         }
@@ -167,6 +176,7 @@ function chooseDirectory(E) {
     return true;
 }
 
+init();
 var hash = location.hash;
 if (hash) {
     hash = hash.replace(/^[#\/\/\.]+/, '');
@@ -175,5 +185,7 @@ if (hash) {
 } else {
     playNext();
 }
+
 </script>
+
 </html>
