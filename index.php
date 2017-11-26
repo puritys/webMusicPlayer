@@ -84,7 +84,7 @@ HTML;
 echo '<br />';
 
 foreach ($files as $file) {
-    echo '<a style="display: block; height: 15px; margin: 1px 0;" href="'. urlencode($file).'"  onclick="playThis(\'' .$file.'\');return false;">' . preg_replace('/^\.\/\//', '', $file) .'</a> <br />';
+    echo '<div style="height: 25px; margin: 1px 0;" ><a href="'. urlencode($file).'"  onclick="playThis(\'' .$file.'\');return false;">' . preg_replace('/^\.\/\//', '', $file) .'</a>  / <a style="color:#a00;" href="save.php?file='.preg_replace('/^\.\/\//', '',$file) .'">Save File</a><br />'. "</div>\n";
 }
 
 foreach ($files as &$file) {
