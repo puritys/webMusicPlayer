@@ -9,7 +9,7 @@ if (preg_match('/[\.\/\\]/', $chooseDir)) {
 $dirs = array(".");
 $d = opendir('./');
 while ($f = readdir($d)) {
-    if ($f == '.' || $f == '..' ) continue;
+    if (substr($f, 0, 1) == '.') continue;
     if (is_dir($f)) {
         $dirs[] = $f;
     }
@@ -29,7 +29,6 @@ while ($f = readdir($d)) {
         <select name="dir">
 <?php
         foreach ($dirs as $dir) {
-            if ($dir == '.' || $dir == '..') continue;
             echo "<option value=\"$dir\">$dir</option>";
         }
 ?> 
